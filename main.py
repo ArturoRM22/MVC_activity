@@ -1,9 +1,12 @@
 from fastapi import FastAPI
-from admin import router as admin_router
+from routes.admins import router as admins_router
+from database.database import initialize_database
 
 app = FastAPI()
 
-app.include_router(admin_router, prefix="/api")
+initialize_database()
+
+app.include_router(admins_router)
 
 @app.get("/")
 def read_root():
