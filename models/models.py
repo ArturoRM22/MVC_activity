@@ -12,6 +12,8 @@ class Cita(BaseModel):
     hora: datetime
     motivo: str
     estado: str
+    paciente_id: int
+    medico_id: int
 
 class Medico(Usuario):
     especialidad: str

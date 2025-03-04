@@ -1,7 +1,7 @@
 import sqlite3
 
 # Database file path
-DATABASE_FILE = "database.db"
+DATABASE_FILE = "database/database.db"
 
 # Function to connect to the database
 def get_db_connection():
@@ -18,7 +18,7 @@ def initialize_database():
         # Create tables
         cursor.executescript("""
         CREATE TABLE IF NOT EXISTS Usuario (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT NOT NULL,
             rol TEXT NOT NULL
         );
@@ -39,14 +39,14 @@ def initialize_database():
         );
 
         CREATE TABLE IF NOT EXISTS Medico (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             especialidad TEXT,
             horarios TEXT,
             FOREIGN KEY (id) REFERENCES Usuario(id)
         );
 
         CREATE TABLE IF NOT EXISTS Cita (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             fecha DATE NOT NULL,
             hora TEXT NOT NULL,
             motivo TEXT,
@@ -57,4 +57,3 @@ def initialize_database():
             FOREIGN KEY (medico_id) REFERENCES Medico(id)
         );
         """)
-
