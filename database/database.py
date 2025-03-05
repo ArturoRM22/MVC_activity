@@ -20,29 +20,9 @@ def initialize_database():
         CREATE TABLE IF NOT EXISTS Usuario (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT NOT NULL,
+            username TEXT NOT NULL,
+            password TEXT NOT NULL,
             rol TEXT NOT NULL
-        );
-
-        CREATE TABLE IF NOT EXISTS Admin (
-            id INTEGER PRIMARY KEY,
-            FOREIGN KEY (id) REFERENCES Usuario(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS Enfermera (
-            id INTEGER PRIMARY KEY,
-            FOREIGN KEY (id) REFERENCES Usuario(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS Paciente (
-            id INTEGER PRIMARY KEY,
-            FOREIGN KEY (id) REFERENCES Usuario(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS Medico (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            especialidad TEXT,
-            horarios TEXT,
-            FOREIGN KEY (id) REFERENCES Usuario(id)
         );
 
         CREATE TABLE IF NOT EXISTS Cita (
@@ -53,7 +33,7 @@ def initialize_database():
             estado TEXT,
             paciente_id INTEGER,
             medico_id INTEGER,
-            FOREIGN KEY (paciente_id) REFERENCES Paciente(id),
-            FOREIGN KEY (medico_id) REFERENCES Medico(id)
+            FOREIGN KEY (paciente_id) REFERENCES Usuario(id),
+            FOREIGN KEY (medico_id) REFERENCES Usuario(id)
         );
         """)

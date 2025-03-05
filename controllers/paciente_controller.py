@@ -1,30 +1,22 @@
 import sqlite3
 from database.database import get_db_connection
-from models.models import Usuario
+from models.models import Usuario, UserRole, Cita, UsuarioResponse
+from controllers.cita_controller import CitaController
+from controllers.usuario_controller import UsuarioController
+from typing import List
 
 class PacienteController:
     @staticmethod
-    def registrar_paciente(paciente: Usuario):
-        conn = get_db_connection()
-        cursor = conn.cursor()
+    def obtener_medicos() -> List[UsuarioResponse]:
+        # Fetch all doctors
+        return UsuarioController.obtener_usuarios_por_rol(UserRole.MEDICO)
 
-        print(f"Registering patient: id={paciente.id}, nombre={paciente.nombre}, rol={paciente.rol}")
+    @staticmethod
+    def solicitar_cita(cita: Cita):
+        # Request an appointment
+        return CitaController.registrar_cita(cita)
 
-        try:
-            cursor.execute("""
-            INSERT INTO Usuario (id, nombre, rol)
-            VALUES (?, ?, ?)
-            """, (paciente.id, paciente.nombre, paciente.rol))
-
-            cursor.execute("""
-            INSERT INTO Paciente (id)
-            VALUES (?)
-            """, (paciente.id,))
-
-            conn.commit()
-        except sqlite3.IntegrityError as e:
-            raise Exception(f"Database error: {str(e)}")
-        finally:
-            conn.close()
-
-        return paciente
+    @staticmethod
+    def cancelar_cita(cita_id: int):
+        # Cancel an appointment
+        return CitaController.cancelar_cita(cita_id)

@@ -4,7 +4,7 @@ from controllers.cita_controller import CitaController
 
 router = APIRouter(prefix="/citas", tags=["citas"])
 
-@router.post("/", response_model=Cita)
+@router.post("/registrar", response_model=Cita)
 def registrar_cita(cita: Cita):
     try:
         return CitaController.registrar_cita(cita)
