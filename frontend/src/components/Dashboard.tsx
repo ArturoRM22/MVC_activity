@@ -53,7 +53,6 @@ const Dashboard = () => {
       label: "Citas",
       icon: <Calendar size={20} />,
       validRoles: ["Medico", "Paciente"],
-
     },
     {
       key: "medics",
@@ -65,7 +64,7 @@ const Dashboard = () => {
       key: "patients",
       label: "Pacientes",
       icon: <UsersIcon size={20} />,
-      validRoles: ["Administrador", "Enfermera", ],
+      validRoles: ["Administrador", "Enfermera"],
     },
     {
       key: "users",
@@ -91,7 +90,7 @@ const Dashboard = () => {
             <div className="bg-white shadow-md rounded-lg">
               <Routes>
                 <Route path="/profile" element={<Profile />} />
-                { (currentRole == "Paciente" || currentRole == "Medico") &&
+                {(currentRole == "Paciente" || currentRole == "Medico") && (
                   <Route
                     path="/appointments"
                     element={
@@ -103,16 +102,21 @@ const Dashboard = () => {
                       />
                     }
                   />
-                }
-                { (currentRole === "Administrador" || currentRole == "Enfermera" ) &&
-                <Route path="/patients" element={<Patients />} />
-                }
-                { (currentRole === "Administrador" || currentRole == "Enfermera" ) &&
-                <Route path="/medics" element={<Medics />} />
-                }
-                { currentRole === "Administrador" &&
-                <Route path="/users" element={<Users />} />
-                }
+                )}
+                {(currentRole === "Administrador" ||
+                  currentRole == "Enfermera") && (
+                  <Route path="/patients" element={<Patients />} />
+                )}
+                {(currentRole === "Administrador" ||
+                  currentRole == "Enfermera") && (
+                  <Route
+                    path="/medics"
+                    element={<Medics currentRole={currentRole} />}
+                  />
+                )}
+                {currentRole === "Administrador" && (
+                  <Route path="/users" element={<Users />} />
+                )}
               </Routes>
             </div>
           </div>

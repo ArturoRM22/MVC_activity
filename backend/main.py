@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from routes.admins import router as admins_router
 from routes.pacientes import router as pacientes_router
 from routes.medicos import router as medicos_router
@@ -9,6 +10,15 @@ from models.models import Usuario, UserRole
 from controllers.admin_controller import AdminController
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 initialize_database()
 
