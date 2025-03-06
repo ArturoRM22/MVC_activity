@@ -20,3 +20,8 @@ class PacienteController:
     def cancelar_cita(cita_id: int):
         # Cancel an appointment
         return CitaController.cancelar_cita(cita_id)
+
+    @staticmethod
+    def obtener_citas(id_paciente: int) -> List[Cita]:
+        # Fetch all appointments for the given patient
+        return CitaController.obtener_citas_id(id_paciente)

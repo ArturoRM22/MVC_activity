@@ -245,3 +245,39 @@ class CitaController:
             conn.close()
 
         return Cita(**current_data)
+
+
+    @staticmethod
+    def obtener_citas_id(id_user: int) -> List[Cita]:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        try:
+            # Fetch all appointments for the given doctor
+            cursor.execute("""
+                SELECT id, fecha, hora, motivo, estado, paciente_id, medico_id
+                FROM Cita WHERE medico_id = ? OR paciente_id = ?
+            """, (
+                id_user, id_user
+            ))
+
+            citas = cursor.fetchall()
+
+            # Convert the result into a list of Cita objects
+            return [
+                Cita(
+                    id=cita[0],
+                    fecha=cita[1],
+                    hora=cita[2],
+                    motivo=cita[3],
+                    estado=cita[4],
+                    paciente_id=cita[5],
+                    medico_id=cita[6]
+                )
+                for cita in citas
+            ]
+
+        except sqlite3.IntegrityError as e:
+            raise Exception(f"Database error: {str(e)}")
+        finally:
+            conn.close()

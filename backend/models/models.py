@@ -39,8 +39,12 @@ class CitaUpdate(BaseModel):
     medico_id: Optional[int] = None
 
 class UsuarioResponse(BaseModel):
-    id: int
-    nombre: str
+    id: Optional[int] = None
+    nombre: Optional[str] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
+    rol: Optional[UserRole] = None
+
+class LoginRequest(BaseModel):
     username: str
     password: str
-    rol: UserRole

@@ -35,3 +35,33 @@ class UsuarioController:
             raise Exception(f"Database error: {str(e)}")
         finally:
             conn.close()
+
+    @staticmethod
+    def obtener_usuarios() -> List[UsuarioResponse]:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        try:
+            # Fetch users by role
+            cursor.execute("""
+                SELECT id, nombre, username, rol
+                FROM Usuario
+            """)
+
+            usuarios = cursor.fetchall()
+
+            # Convert the result into a list of Usuario objects
+            return [
+                UsuarioResponse(
+                    id=usuario[0],
+                    nombre=usuario[1],
+                    username=usuario[2],
+                    rol=usuario[3]
+                )
+                for usuario in usuarios
+            ]
+
+        except sqlite3.IntegrityError as e:
+            raise Exception(f"Database error: {str(e)}")
+        finally:
+            conn.close()

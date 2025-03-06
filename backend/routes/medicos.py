@@ -26,9 +26,9 @@ def cancelar_cita(cita_id: int):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/asistir")
-def asistir():
+@router.get("/citas/{medico_id}", response_model=List[Cita])
+def obtener_citas(medico_id: int):
     try:
-        return EnfermeraController.asistir()
-    except Exception as e:
+        return MedicoController.obtener_citas(medico_id)
+    except Exception as e: 
         raise HTTPException(status_code=400, detail=str(e))

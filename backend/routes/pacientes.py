@@ -12,6 +12,13 @@ def obtener_medicos():
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@router.get("/citas/{id_paciente}", response_model=List[Cita])
+def obtener_citas(id_paciente: int):
+    try:
+        return PacienteController.obtener_citas(id_paciente)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @router.post("/citas/", response_model=Cita)
 def solicitar_cita(cita: Cita):
     try:
@@ -25,3 +32,4 @@ def cancelar_cita(cita_id: int):
         return PacienteController.cancelar_cita(cita_id)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
