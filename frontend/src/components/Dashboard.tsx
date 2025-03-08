@@ -12,32 +12,6 @@ const Dashboard = () => {
   const [viewMode, setViewMode] = useState("list");
   const [currentRole, setCurrentRole] = useState("Administrador");
   const [activeNavItem, setActiveNavItem] = useState("appointments");
-  const citas = [
-    {
-      id: "1",
-      patient: "Maria Garcia",
-      date: "Mar 4, 2025",
-      time: "10:00 AM",
-      reason: "Annual checkup",
-      status: "confirmed" as const,
-    },
-    {
-      id: "2",
-      patient: "Robert Johnson",
-      date: "Mar 4, 2025",
-      time: "11:30 AM",
-      reason: "Flu symptoms",
-      status: "pending" as const,
-    },
-    {
-      id: "3",
-      patient: "Emily Chen",
-      date: "Mar 4, 2025",
-      time: "2:00 PM",
-      reason: "Follow-up consultation",
-      status: "confirmed" as const,
-    },
-  ];
 
   const roles = ["Administrador", "Enfermera", "Medico", "Paciente"];
 
@@ -95,7 +69,6 @@ const Dashboard = () => {
                     path="/appointments"
                     element={
                       <Appointments
-                        Appointments={citas}
                         viewMode={viewMode}
                         setViewMode={setViewMode}
                         currentRole={currentRole}

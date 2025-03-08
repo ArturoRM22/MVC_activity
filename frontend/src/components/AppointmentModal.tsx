@@ -1,38 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 interface AppointmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (appointmentData: {
-    date: string;
-    time: string;
-    doctor: string;
-    reason: string;
+    fecha: string;
+    hora: string;
+    motivo: string;
+    medico_id: number;
   }) => void;
+  paciente_id: number; // Add paciente_id as a prop
 }
 
-const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onClose, onSubmit, paciente_id }) => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [reason, setReason] = useState('');
-  const [selectedDoctor, setSelectedDoctor] = useState('');
+  const [selectedDoctorId, setSelectedDoctorId] = useState<number | null>(null);
+  const [availableDoctors, setAvailableDoctors] = useState<{ id: number; nombre: string; especialidad: string }[]>([]);
 
-  // Mock available doctors - replace with actual data
-  const availableDoctors = [
-    "Dr. Smith - General",
-    "Dr. Johnson - Cardiology",
-    "Dr. Williams - Pediatrics"
-  ];
+  // Fetch available doctors when the modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const fetchDoctors = async () => {
+        try {
+          const response = await fetch('http://localhost:8000/admins/medicos');
+          const data = await response.json();
+          setAvailableDoctors(data);
+        } catch (error) {
+          console.error('Error fetching doctors:', error);
+        }
+      };
+
+      fetchDoctors();
+    }
+  }, [isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!selectedDoctorId) {
+      alert('Please select a doctor.');
+      return;
+    }
+
     onSubmit({
-      date,
-      time,
-      doctor: selectedDoctor,
-      reason
+      fecha: date,
+      hora: time,
+      motivo: reason,
+      medico_id: selectedDoctorId,
     });
+
     onClose();
   };
 
@@ -81,14 +100,14 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onClose, on
             </label>
             <select
               required
-              value={selectedDoctor}
-              onChange={(e) => setSelectedDoctor(e.target.value)}
+              value={selectedDoctorId || ''}
+              onChange={(e) => setSelectedDoctorId(Number(e.target.value))}
               className="w-full p-2 border rounded-md"
             >
               <option value="">Select a doctor</option>
               {availableDoctors.map((doctor) => (
-                <option key={doctor} value={doctor}>
-                  {doctor}
+                <option key={doctor.id} value={doctor.id}>
+                  {doctor.nombre} - {doctor.especialidad}
                 </option>
               ))}
             </select>
