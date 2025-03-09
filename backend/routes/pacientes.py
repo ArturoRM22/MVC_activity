@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models.models import Usuario, Cita, UsuarioResponse
+from models.objetos.models import Usuario, Cita, UsuarioResponse
 from controllers.paciente_controller import PacienteController
 from typing import List
 

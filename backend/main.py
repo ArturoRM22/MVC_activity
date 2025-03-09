@@ -7,7 +7,7 @@ from routes.enfermeras import router as enfermeras_router
 from routes.auth import router as auth_router
 from routes.users import router as users_router
 from database.database import initialize_database
-from models.models import Usuario, UserRole
+from models.objetos.models import Usuario, UserRole
 from controllers.admin_controller import AdminController
 
 app = FastAPI()
@@ -29,15 +29,6 @@ app.include_router(medicos_router)
 app.include_router(enfermeras_router)
 app.include_router(auth_router)
 app.include_router(users_router)
-
-""" admin = Usuario(
-    nombre="Admin User",
-    username="admin",
-    password="admin123",
-    rol=UserRole.ADMIN
-)
-
-AdminController.crear_admin(admin) """
 
 @app.get("/")
 def read_root():

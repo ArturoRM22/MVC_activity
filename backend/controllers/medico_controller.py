@@ -1,28 +1,32 @@
-import sqlite3
-from database.database import get_db_connection
-from models.models import UserRole, Cita
-from controllers.cita_controller import CitaController
 from typing import List
+from models.objetos.models import Cita, CitaStatus
+from models.clasesDAO.CitaDAO import CitaDAO  # Import the CitaDAO class
 
 class MedicoController:
     @staticmethod
-    def aceptar_cita(cita_id: int):
-        # Accept an appointment
-        return CitaController.aceptar_cita(cita_id)
+    def aceptar_cita(cita_id: int) -> bool:
+        """
+        Accept an appointment (cita) by updating its status to "Pendiente".
+        """
+        return CitaDAO.actualizar_estado_cita(cita_id, CitaStatus.PENDIENTE)
 
     @staticmethod
-    def cancelar_cita(cita_id: int):
-        # Cancel an appointment
-        return CitaController.cancelar_cita(cita_id)
+    def cancelar_cita(cita_id: int) -> bool:
+        """
+        Cancel an appointment (cita) by updating its status to "Cancelada".
+        """
+        return CitaDAO.actualizar_estado_cita(cita_id, CitaStatus.CANCELADA)
 
     @staticmethod
     def obtener_citas(medico_id: int) -> List[Cita]:
-        # Fetch appointments for the doctor
-        return CitaController.obtener_citas_por_medico(medico_id)
+        """
+        Fetch all appointments (citas) for the given doctor (medico).
+        """
+        return CitaDAO.obtener_citas_por_medico(medico_id)
 
     @staticmethod
-    def terminar_cita(cita_id: int):
-        # Cancel an appointment
-        return CitaController.terminar_cita(cita_id)
-
-
+    def terminar_cita(cita_id: int) -> bool:
+        """
+        Mark an appointment (cita) as completed by updating its status to "Terminada".
+        """
+        return CitaDAO.actualizar_estado_cita(cita_id, CitaStatus.TERMINADA)

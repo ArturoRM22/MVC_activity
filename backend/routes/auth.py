@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models.models import Usuario, LoginRequest
+from models.objetos.models import Usuario, LoginRequest
 from controllers.auth_controller import AuthController
 
 router = APIRouter(prefix="/auth", tags=["auth"])

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models.models import Usuario
+from models.objetos.models import Usuario
 from controllers.enfermera_controller import EnfermeraController
 
 router = APIRouter(prefix="/enfermeras", tags=["Enfermeras"])

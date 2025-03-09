@@ -1,27 +1,33 @@
-import sqlite3
-from database.database import get_db_connection
-from models.models import Usuario, UserRole, Cita, UsuarioResponse
-from controllers.cita_controller import CitaController
-from controllers.usuario_controller import UsuarioController
 from typing import List
+from models.objetos.models import UsuarioResponse, Cita
+from models.clasesDAO.UsuarioDAO import UsuarioDAO
+from models.clasesDAO.CitaDAO import CitaDAO
 
 class PacienteController:
     @staticmethod
     def obtener_medicos() -> List[UsuarioResponse]:
-        # Fetch all doctors
-        return UsuarioController.obtener_usuarios_por_rol(UserRole.MEDICO)
+        """
+        Fetch all doctors (medicos) from the database.
+        """
+        return UsuarioDAO.obtener_medicos()
 
     @staticmethod
-    def solicitar_cita(cita: Cita):
-        # Request an appointment
-        return CitaController.registrar_cita(cita)
+    def solicitar_cita(cita: Cita) -> Cita:
+        """
+        Request a new appointment (cita) for the patient.
+        """
+        return CitaDAO.registrar_cita(cita)
 
     @staticmethod
-    def cancelar_cita(cita_id: int):
-        # Cancel an appointment
-        return CitaController.cancelar_cita(cita_id)
+    def cancelar_cita(cita_id: int) -> bool:
+        """
+        Cancel an existing appointment (cita) by its ID.
+        """
+        return CitaDAO.actualizar_estado_cita(cita_id, CitaStatus.CANCELADA)
 
     @staticmethod
     def obtener_citas(id_paciente: int) -> List[Cita]:
-        # Fetch all appointments for the given patient
-        return CitaController.obtener_citas_id(id_paciente)
+        """
+        Fetch all appointments (citas) for the given patient (paciente).
+        """
+        return CitaDAO.obtener_citas_por_paciente(id_paciente)
