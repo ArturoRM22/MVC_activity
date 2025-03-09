@@ -1,60 +1,63 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Calendar, User, Users as UsersIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import { Calendar, User as UserIcon, Users as UsersIcon } from "lucide-react";
 import Sidebar from "./Sidebar";
 import Profile from "./Profile";
 import Appointments from "./Appointments";
 import Patients from "./Patients";
 import Users from "./Users";
 import Medics from "./Medics";
+import { User } from "../types";
 
-const Dashboard = () => {
+interface DashboardProps {
+  user: User;
+}
+
+const Dashboard = ({ user }: DashboardProps) => {
   const [viewMode, setViewMode] = useState("list");
-  const [currentRole, setCurrentRole] = useState("Administrador");
   const [activeNavItem, setActiveNavItem] = useState("appointments");
 
-  const roles = ["Administrador", "Enfermera", "Medico", "Paciente"];
+  useEffect(() => {
+    console.log("Rendering Dashboard. User:", user);
+  }, [user]);
 
   const navItems = [
     {
       key: "profile",
       label: "Perfil",
-      icon: <User size={20} />,
-      validRoles: ["Administrador", "Enfermera", "Medico", "Paciente"],
+      icon: <UserIcon size={20} />,
+      validRoles: ["admin", "enfermera", "medico", "paciente"],
     },
     {
       key: "appointments",
       label: "Citas",
       icon: <Calendar size={20} />,
-      validRoles: ["Medico", "Paciente"],
+      validRoles: ["medico", "paciente"],
     },
     {
       key: "medics",
       label: "Medicos",
       icon: <UsersIcon size={20} />,
-      validRoles: ["Administrador", "Enfermera"],
+      validRoles: ["admin", "enfermera"],
     },
     {
       key: "patients",
       label: "Pacientes",
       icon: <UsersIcon size={20} />,
-      validRoles: ["Administrador", "Enfermera"],
+      validRoles: ["admin", "enfermera"],
     },
     {
       key: "users",
       label: "Usuarios",
       icon: <UsersIcon size={20} />,
-      validRoles: ["Administrador"],
+      validRoles: ["admin"],
     },
   ];
 
   return (
-    <Router>
       <div className="flex bg-gray-50 min-h-screen">
         <Sidebar
-          currentRole={currentRole}
-          setCurrentRole={setCurrentRole}
-          roles={roles}
+          currentRole={user.rol}
           activeNavItem={activeNavItem}
           setActiveNavItem={setActiveNavItem}
           navItems={navItems}
@@ -64,30 +67,29 @@ const Dashboard = () => {
             <div className="bg-white shadow-md rounded-lg">
               <Routes>
                 <Route path="/profile" element={<Profile />} />
-                {(currentRole == "Paciente" || currentRole == "Medico") && (
+                {(user.rol == "medico" || user.rol == "paciente") && (
                   <Route
                     path="/appointments"
                     element={
                       <Appointments
                         viewMode={viewMode}
                         setViewMode={setViewMode}
-                        currentRole={currentRole}
+                        currentRole={user.rol}
+                        id_user={user.id}
                       />
                     }
                   />
                 )}
-                {(currentRole === "Administrador" ||
-                  currentRole == "Enfermera") && (
+                {(user.rol === "admin" || user.rol === "enfermera") && (
                   <Route path="/patients" element={<Patients />} />
                 )}
-                {(currentRole === "Administrador" ||
-                  currentRole == "Enfermera") && (
+                {(user.rol === "admin" || user.rol === "enfermera") && (
                   <Route
                     path="/medics"
-                    element={<Medics currentRole={currentRole} />}
+                    element={<Medics currentRole={user.rol} />}
                   />
                 )}
-                {currentRole === "Administrador" && (
+                {user.rol === "admin" && (
                   <Route path="/users" element={<Users />} />
                 )}
               </Routes>
@@ -95,7 +97,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </Router>
   );
 };
 

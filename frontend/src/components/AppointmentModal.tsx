@@ -10,10 +10,9 @@ interface AppointmentModalProps {
     motivo: string;
     medico_id: number;
   }) => void;
-  paciente_id: number; // Add paciente_id as a prop
 }
 
-const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onClose, onSubmit, paciente_id }) => {
+const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [reason, setReason] = useState('');

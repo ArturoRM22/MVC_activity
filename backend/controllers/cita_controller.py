@@ -256,9 +256,9 @@ class CitaController:
             # Fetch all appointments for the given doctor
             cursor.execute("""
                 SELECT id, fecha, hora, motivo, estado, paciente_id, medico_id
-                FROM Cita WHERE medico_id = ? OR paciente_id = ?
+                FROM Cita WHERE paciente_id = ?
             """, (
-                id_user, id_user
+                id_user,
             ))
 
             citas = cursor.fetchall()

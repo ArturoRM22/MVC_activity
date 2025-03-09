@@ -26,7 +26,7 @@ const Login = ({ setUser }: { setUser: (user: User) => void }) => {
       const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data)); // Save user info
       setUser(data); // Update user state in App component
-      navigate("/"); // Redirect to dashboard
+      navigate("/"); 
     } catch (err) {
       setError("Login failed. Check your username and password.");
     }

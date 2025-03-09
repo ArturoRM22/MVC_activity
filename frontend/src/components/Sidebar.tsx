@@ -1,33 +1,30 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   currentRole: string;
-  setCurrentRole: (role: string) => void;
-  roles: string[];
   activeNavItem: string;
   setActiveNavItem: (key: string) => void;
   navItems: { key: string; icon: React.ReactNode; label: string, validRoles: string[] }[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentRole, setCurrentRole, roles, activeNavItem, setActiveNavItem, navItems }) => {
+const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeNavItem, setActiveNavItem, navItems }) => {
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // Clear user from local storage
+    window.location.reload();// Redirect to login page
+  };
+
   return (
     <div className="w-64 bg-white border-r shadow-md flex flex-col">
       <div className="p-4 border-b">
-        <select 
-          value={currentRole}
-          onChange={(e) => setCurrentRole(e.target.value)}
-          className="w-full p-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          {roles.map((role) => (
-            <option key={role} value={role}>{role}</option>
-          ))}
-        </select>
+        <div className="w-full p-2 border rounded-md text-gray-700">
+          {currentRole}
+        </div>
       </div>
       <nav className="flex-grow p-4">
-        {navItems.map((item) =>{
-          if (!item.validRoles.includes(currentRole)) return 
-          return  (
+        {navItems.map((item) => {
+          if (!item.validRoles.includes(currentRole)) return null;
+          return (
             <Link
               key={item.key}
               to={`/${item.key}`}
@@ -42,8 +39,16 @@ const Sidebar: React.FC<SidebarProps> = ({ currentRole, setCurrentRole, roles, a
               {item.icon}
               <span>{item.label}</span>
             </Link>
-          )
+          );
         })}
+      <div className="p-4 border-t">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center space-x-3 p-3 rounded-md bg-red-500 text-white hover:bg-red-600"
+        >
+          <span>Logout</span>
+        </button>
+      </div>
       </nav>
     </div>
   );
